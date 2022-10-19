@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <table border="1" id="myTable">
+      {% for st in students %}
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>attend</th>
+      </tr>
+      <tr>
+        <td><strong class="pd-name">{{st.id}}</strong></td>
+        <td>
+          <p><span class="pd-price">{{st.name}}</span></p>
+          <p></p>
+        </td>
+        <td>
+          <form class="parent" actions="" method="post">
+            {% csrf_token %} {{form.as_P}}
+            <label class="anim">
+              <input
+                class="btnSelect"
+                type="radio"
+                data-sid="{{st.id}}"
+                name="status"
+                value="0"
+              />
+              Absent
+            </label>
+            <label class="anim">
+              <input
+                class="btnSelect"
+                type="radio"
+                data-sid="{{st.id}}"
+                name="status"
+                value="1"
+              />
+              Present
+            </label>
+            <label class="anim">
+              <input
+                class="btnSelect"
+                type="radio"
+                name="status"
+                value="2"
+                checked="checked"
+              />
+              Not Marker
+            </label>
+          </form>
+        </td>
+      </tr>
+      {% endfor %} {% if messages %}
+      <div class="form-group">
+        <div class="col-12">
+          {% for message in messages %} {% if message.tags == "error" %}
+          <div
+            class="alert alert-danger alert-dismissible fade show"
+            role="alert"
+            style="margin-top: 10px"
+          >
+            {{ message }}
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+          {% elif message.tags == "success" %}
+          <div
+            class="alert alert-danger alert-dismissible fade show"
+            role="alert"
+            style="margin-top: 10px"
+          >
+            {{ message }}
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+          {% endif %} {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </table>
+
+    <script>
+      $(document).ready(function () {
+        $("#myTable").on("click", ".btnSelect", function () {
+          var currentRow = $(this).closest("tr");
+
+          var id = currentRow.find(".pd-name").html();
+
+          var csrf =
+            "aCKDguKX8PpUyUqlK98XYpAfEtpPPJZnABCyup4XwTVO2msS52iytlpS8jbxGa9N";
+          postData = { id: id, attend: this.value };
+          $.ajax({
+            dataType: "json",
+            type: "POST",
+            headers: {
+              "X-CSRFToken": csrf,
+            },
+            url: "{% url 'save' %}",
+            data: postData,
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
