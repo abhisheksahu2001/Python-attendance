@@ -14,14 +14,17 @@
       <tr>
         <th>Id</th>
         <th>Name</th>
+        <th>roll</th>
         <th>attend</th>
       </tr>
       <tr>
-        <td><strong class="pd-name">{{st.id}}</strong></td>
+        <td><strong class="pd-id">{{st.id}}</strong></td>
+        <td><strong class="pd-enroll">{{st.enrollNo}}</strong></td>
         <td>
-          <p><span class="pd-price">{{st.name}}</span></p>
+          <p><span class="pd-name">{{st.name}}</span></p>
           <p></p>
         </td>
+
         <td>
           <form class="parent" actions="" method="post">
             {% csrf_token %} {{form.as_P}}
@@ -109,11 +112,19 @@
         });
         $("#myTable").on("click", ".btnSelect", function () {
           var currentRow = $(this).closest("tr");
-          var id = currentRow.find(".pd-name").html();
+          var id = currentRow.find(".pd-id").html();
+          var name = currentRow.find(".pd-name").html();
+          var enroll = currentRow.find(".pd-enroll").html();
 
           var csrf =
             "aCKDguKX8PpUyUqlK98XYpAfEtpPPJZnABCyup4XwTVO2msS52iytlpS8jbxGa9N";
-          postData = { id: id, attend: this.value, date: Formated_date };
+          postData = {
+            id: id,
+            name: name,
+            enroll: enroll,
+            attend: this.value,
+            date: Formated_date,
+          };
           $.ajax({
             dataType: "json",
             type: "POST",

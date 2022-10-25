@@ -1,4 +1,6 @@
 from django.shortcuts import redirect, render
+from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
@@ -26,19 +28,52 @@ def export(request):
 @csrf_exempt
 def save_attend(request):
         id = request.POST.get("id")
-        attend = request.POST["attend"]
-        date = request.POST["date"]
-        try:
-            if id is not None:
-                student = Student.objects.get(id=str(id))
-                student.Attendance = attend
-                student.date_time = date
-                student.save()
-                messages.success(request, "hod Added Successfully!")
-                return HttpResponse("Successful")
-        except:
-                messages.error(request, "hod Added not Successfully!")
-                return redirect('home')
+        Name = request.POST.get("name")
+        Enroll = request.POST.get("enroll")
+        attend = request.POST.get("attend")
+        date = request.POST.get("date")
+        result= Student.objects.filter(Q(name=Name) & Q(enrollNo=Enroll) & Q(date_time=str(date)))
+        if len(result) == 0:
+            student1 = Student.objects.create(name=Name,enrollNo= Enroll, Attendance= attend, date_time =str(date))
+            student1.save()
+            print("created")
+            return HttpResponse("success")
+        else:
+            result.update(Attendance= attend)
+            print("updated")
+            return HttpResponse("Updated")
+
+        # if result is not None:
+        #     result.update(Attendance=attend)
+        #     print(result)
+        # else:       
+        #     # resultlist = list(result)
+        #     # result.save()
+        #     student1 = Student.objects.get_or_create(name=Name,enrollNo= Enroll, Attendance= attend, date_time =str(date))
+        #     student1.save()
+        #     print("created")
+        #     return HttpResponse("none")
+
+        # student1 = Student.objects.get_or_create(name=Name,enrollNo= Enroll, Attendance= attend, date_time =str(date))
+        # student1.save()
+        # if student1:
+        #     new_student = Student.objects.create(id=str(id),name=Name,Attendance = attend,date_time=date)
+        #     new_student.save()
+        # Att_date = Student.objects.filter(date_time =date)
+        # jsondata = json.loads(Att_date)
+        # print(jsondata)
+        # try:
+        #     if id is not None:
+        #         student = Student.objects.get(id=str(id))
+        #         student.Attendance = attend
+        #         student.date_time = date
+        #         student.save()
+        #         messages.success(request, "hod Added Successfully!")
+        #         return HttpResponse("Successful")
+        #     student1.save()
+        # except:
+        #         messages.error(request, "hod Added not Successfully!")
+        #         return redirect('home')
         
             # return json.dumps({"code":1,"data":student.id})              
      
