@@ -41,41 +41,7 @@ def save_attend(request):
         else:
             result.update(Attendance= attend)
             print("updated")
-            return HttpResponse("Updated")
-
-        # if result is not None:
-        #     result.update(Attendance=attend)
-        #     print(result)
-        # else:       
-        #     # resultlist = list(result)
-        #     # result.save()
-        #     student1 = Student.objects.get_or_create(name=Name,enrollNo= Enroll, Attendance= attend, date_time =str(date))
-        #     student1.save()
-        #     print("created")
-        #     return HttpResponse("none")
-
-        # student1 = Student.objects.get_or_create(name=Name,enrollNo= Enroll, Attendance= attend, date_time =str(date))
-        # student1.save()
-        # if student1:
-        #     new_student = Student.objects.create(id=str(id),name=Name,Attendance = attend,date_time=date)
-        #     new_student.save()
-        # Att_date = Student.objects.filter(date_time =date)
-        # jsondata = json.loads(Att_date)
-        # print(jsondata)
-        # try:
-        #     if id is not None:
-        #         student = Student.objects.get(id=str(id))
-        #         student.Attendance = attend
-        #         student.date_time = date
-        #         student.save()
-        #         messages.success(request, "hod Added Successfully!")
-        #         return HttpResponse("Successful")
-        #     student1.save()
-        # except:
-        #         messages.error(request, "hod Added not Successfully!")
-        #         return redirect('home')
-        
-            # return json.dumps({"code":1,"data":student.id})              
+            return HttpResponse("Updated")         
      
 def simple_upload(request):
     if request.method == 'POST':
