@@ -9,6 +9,7 @@
   </head>
   <body>
     <table border="1" id="myTable">
+      <label>Date :<input type="Date" name="date" id="date" /></label>
       {% for st in students %}
       <tr>
         <th>Id</th>
@@ -96,14 +97,23 @@
 
     <script>
       $(document).ready(function () {
+        var Formated_date = "";
+        let field = document.querySelector("#date");
+
+        date.addEventListener("input", function () {
+          function Set_Global() {
+            let date = new Date(field.value);
+            Formated_date = date.toDateString().split(" ").slice(0).join(" ");
+          }
+          Set_Global();
+        });
         $("#myTable").on("click", ".btnSelect", function () {
           var currentRow = $(this).closest("tr");
-
           var id = currentRow.find(".pd-name").html();
 
           var csrf =
             "aCKDguKX8PpUyUqlK98XYpAfEtpPPJZnABCyup4XwTVO2msS52iytlpS8jbxGa9N";
-          postData = { id: id, attend: this.value };
+          postData = { id: id, attend: this.value, date: Formated_date };
           $.ajax({
             dataType: "json",
             type: "POST",

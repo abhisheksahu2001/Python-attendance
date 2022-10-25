@@ -27,17 +27,19 @@ def export(request):
 def save_attend(request):
         id = request.POST.get("id")
         attend = request.POST["attend"]
+        date = request.POST["date"]
         try:
             if id is not None:
                 student = Student.objects.get(id=str(id))
                 student.Attendance = attend
+                student.date_time = date
                 student.save()
                 messages.success(request, "hod Added Successfully!")
                 return HttpResponse("Successful")
         except:
                 messages.error(request, "hod Added not Successfully!")
                 return redirect('home')
-             
+        
             # return json.dumps({"code":1,"data":student.id})              
      
 def simple_upload(request):
